@@ -1,4 +1,3 @@
-# This Python file uses the following encoding: utf-8
 """
 Morpion en 3 dimensions avec une IA utilisant l'algorithme Minimax implémenté
 Copyright (C) 2015  Guillaume Augustoni
@@ -19,7 +18,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>."""
 from direct.showbase.ShowBase import ShowBase
 from panda3d.core import Point3, LPoint3
 from random import randrange
-from itertools import chain
 from copy import *
 
 MARRON = (0.5,0.25,0,1)
@@ -332,7 +330,7 @@ class MyApp(ShowBase):
 
     def test(self):
         print(self.tableau)
-        if 0 in chain.from_iterable( self.tableau):
+        if not None in self.tableau:
             temp=self.mouvementPossible(self.tableau)
             etat=[None for i in range(9)]
             valeurs = [None for i in range(9)]
