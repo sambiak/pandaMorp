@@ -1,3 +1,19 @@
+"""
+Morpion en 3 dimensions avec une IA utilisant l'algorithme Minimax implémenté
+Copyright (C) 2015  Guillaume Augustoni
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>."""
 
 from direct.showbase.ShowBase import ShowBase
 from panda3d.core import Point3, LPoint3
@@ -12,7 +28,7 @@ def position(i):
 
 
 class MyApp(ShowBase):
- 
+
     def testVictoire(self, Liste):
         if Liste[0][0] + Liste [0][1] + Liste [0][2] == 30:
             return 1
@@ -20,63 +36,63 @@ class MyApp(ShowBase):
             return -1
 
         elif Liste[1][0] + Liste [1][1] + Liste [1][2] == 30:
-            
+
             return 1
         elif Liste[1][0] + Liste [1][1] + Liste [1][2] == 3:
-            
+
             return -1
 
 
         elif Liste[2][0] + Liste [2][1] + Liste [2][2] == 30:
-            
+
             return 1
         elif Liste[2][0] + Liste [2][1] + Liste [2][2] == 3:
-            
+
             return -1
 
         elif Liste[0][0] + Liste [1][0] + Liste [2][0] == 30:
-            
+
             return 1
         elif Liste[0][0] + Liste [1][0] + Liste [2][0] == 3:
-            
+
             return -1
         elif Liste[0][1] + Liste [1][1] + Liste [2][1] == 30:
-            
+
             return 1
         elif Liste[0][1] + Liste [1][1] + Liste [2][1] == 3:
-            
+
             return -1
 
         elif Liste[0][2] + Liste [1][2] + Liste [2][2] == 30:
-            
+
             return 1
         elif Liste[0][2] + Liste [1][2] + Liste [2][2] == 3:
             return -1
-            
+
 
         elif Liste[0][0] + Liste [1][1] + Liste [2][2] == 30:
-            
+
             return 1
         elif Liste[0][0] + Liste [1][1] + Liste [2][2] == 3:
-            
+
             return -1
 
         elif Liste[0][2] + Liste [1][1] + Liste [2][0] == 30:
-            
+
             return 1
         elif Liste[0][2] + Liste [1][1] + Liste [2][0] == 3:
-            
+
             return -1
-    
+
 
         else:
-            
+
             return 0
-            
+
         return 21
     def __init__(self):
         ShowBase.__init__(self)
-        
+
         self.camera.setPosHpr(0, -12, 8, 0, -35, 0)
         self.disableMouse()
         self.tableau = [[0 for i in range(3)]for i in range(3)]
@@ -105,8 +121,8 @@ class MyApp(ShowBase):
             if self.environ[i] is not None:
                 self.environ[i].detachNode()
             self.tableau[i%3][i//3] = 0
-                  
-    
+
+
     def addCercle0(self):
         if self.testVictoire(self.tableau) == 0:
             if self.tableau[0][0] == 0:
@@ -146,7 +162,7 @@ class MyApp(ShowBase):
                     self.tableau[0][2] = 10
                 self.environ[2].setPos(position(2))
                 self.tourBlanc = not self.tourBlanc
-    def addCercle3(self):      
+    def addCercle3(self):
         if self.testVictoire(self.tableau) == 0:
             if self.tableau[1][0] == 0:
                 self.environ[3] = self.loader.loadModel("torus")
@@ -159,7 +175,7 @@ class MyApp(ShowBase):
                     self.tableau[1][0] = 10
                 self.environ[3].setPos(position(3))
                 self.tourBlanc = not self.tourBlanc
-    def addCercle4(self):      
+    def addCercle4(self):
         if self.testVictoire(self.tableau) == 0:
             if self.tableau[1][1] == 0:
                 self.environ[4] = self.loader.loadModel("torus")
@@ -172,7 +188,7 @@ class MyApp(ShowBase):
                     self.tableau[1][1] = 10
                 self.environ[4].setPos(position(4))
                 self.tourBlanc = not self.tourBlanc
-    def addCercle5(self):      
+    def addCercle5(self):
         if self.testVictoire(self.tableau) == 0:
             if self.tableau[1][2] == 0:
                 self.environ[5] = self.loader.loadModel("torus")
@@ -185,7 +201,7 @@ class MyApp(ShowBase):
                     self.tableau[1][2] = 10
                 self.environ[5].setPos(position(5))
                 self.tourBlanc = not self.tourBlanc
-    def addCercle6(self):      
+    def addCercle6(self):
         if self.testVictoire(self.tableau) == 0:
             if self.tableau[2][0] == 0:
                 self.environ[6] = self.loader.loadModel("torus")
@@ -198,7 +214,7 @@ class MyApp(ShowBase):
                     self.tableau[2][0] = 10
                 self.environ[6].setPos(position(6))
                 self.tourBlanc = not self.tourBlanc
-    def addCercle7(self):      
+    def addCercle7(self):
         if self.testVictoire(self.tableau) == 0:
             if self.tableau[2][1] == 0:
                 self.environ[7] = self.loader.loadModel("torus")
@@ -211,7 +227,7 @@ class MyApp(ShowBase):
                     self.tableau[2][1] = 10
                 self.environ[7].setPos(position(7))
                 self.tourBlanc = not self.tourBlanc
-    def addCercle8(self):      
+    def addCercle8(self):
         if self.testVictoire(self.tableau) == 0:
             if self.tableau[2][2] == 0:
                 self.environ[8] = self.loader.loadModel("torus")
@@ -245,7 +261,7 @@ class MyApp(ShowBase):
             if self.testVictoire(temp2) is not 0:
                 mouvgagnant.append(i)
         if len(mouvgagnant) is not 0:
-            
+
             var = mouvgagnant[randrange(len(mouvgagnant))]
             if var == 0:
                 self.addCercle0()
@@ -266,7 +282,7 @@ class MyApp(ShowBase):
             elif var == 8:
                 self.addCercle8()
         elif len(self.mouvementPossible(self.tableau)) is not 0:
-            
+
             var = self.mouvementPossible(self.tableau)[randrange(len(self.mouvementPossible(self.tableau)))]
             if var == 0:
                 self.addCercle0()
@@ -297,7 +313,7 @@ class MyApp(ShowBase):
                 etat[len(etat)-1] [i//3][i%3] = 10
                 if self.testVictoire(etat[len(etat)-1]) != 0:
                     return 1
-            else: 
+            else:
                 etat[len(etat)-1] [i//3][i%3] = 1
                 if self.testVictoire(etat[len(etat)-1]) != 0:
 
@@ -327,7 +343,7 @@ class MyApp(ShowBase):
                         valeurajouer = i
                         print("valeur a jouer")
                         print(i)
-                else: 
+                else:
                     etat[i] [i//3][i%3] = 1
                     if self.testVictoire(etat[i]) != 0:
                         valeurajouer = i
@@ -367,8 +383,8 @@ class MyApp(ShowBase):
                 self.addCercle7()
             elif valeurajouer == 8:
                 self.addCercle8()
-            
-    
+
+
 
 
 app = MyApp()
