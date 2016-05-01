@@ -1,7 +1,7 @@
 # This Python file uses the following encoding: utf-8
 """
 Morpion en 3 dimensions avec une IA utilisant l'algorithme Minimax implémenté
-Copyright (C) 2015  Guillaume Augustoni
+Copyright (C) 2015  Guillaume Augustoni, leo
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
