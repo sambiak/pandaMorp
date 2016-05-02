@@ -106,7 +106,7 @@ class MyApp(ShowBase):
             self.environ.setPos(position(i))
         self.environ = [None for i in range(9)]
         self.tourBlanc = True
-        self.accept('1',self.addCercle0)
+        self.accept('1',lambda x : addCercle(0))
         self.accept('2',self.addCercle1)
         self.accept('3',self.addCercle2)
         self.accept('4',self.addCercle3)
@@ -125,18 +125,18 @@ class MyApp(ShowBase):
             self.tableau[i%3][i//3] = 0
 
 
-    def addCercle0(self):
+    def addCercle(self, i):
         if self.testVictoire(self.tableau) == 0:
-            if self.tableau[0][0] == 0:
-                self.environ[0] = self.loader.loadModel("torus")
-                self.environ[0].reparentTo(self.render)
-                self.environ[0].setScale(0.37465, 0.37465, 0.37465)
+            if self.tableau[i % 3][i //3] == 0:
+                self.environ[i] = self.loader.loadModel("torus")
+                self.environ[i].reparentTo(self.render)
+                self.environ[i].setScale(0.37465, 0.37465, 0.37465)
                 if self.tourBlanc == False:
-                    self.tableau[0][0] = 1
-                    self.environ[0].setColor(BLACK)
+                    self.tableau[i%3][i//3] = 1
+                    self.environ[i].setColor(BLACK)
                 else:
-                    self.tableau[0][0] = 10
-                self.environ[0].setPos(position(0))
+                    self.tableau[i%3][i//3] = 10
+                self.environ[i].setPos(position(i))
                 self.tourBlanc = not self.tourBlanc
     def addCercle1(self):
         if self.testVictoire(self.tableau) == 0:
