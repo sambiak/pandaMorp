@@ -111,15 +111,15 @@ class MyApp(ShowBase):
 
     def addCercle(self, i):
         if self.testVictoire(self.tableau) == 0:
-            if self.tableau[i % 3][i //3] == 0:
+            if self.tableau[i // 3][i %3] == 0:
                 self.environ[i] = self.loader.loadModel("torus")
                 self.environ[i].reparentTo(self.render)
                 self.environ[i].setScale(0.37465, 0.37465, 0.37465)
                 if self.tourBlanc == False:
-                    self.tableau[i%3][i//3] = 1
+                    self.tableau[i//3][i%3] = 1
                     self.environ[i].setColor(BLACK)
                 else:
-                    self.tableau[i%3][i//3] = 10
+                    self.tableau[i//3][i%3] = 10
                 self.environ[i].setPos(position(i))
                 self.tourBlanc = not self.tourBlanc
     def monminimaxamoi(self, tableau,tourBlanc):
@@ -161,21 +161,15 @@ class MyApp(ShowBase):
                     etat[i] [i//3][i%3] = 10
                     if self.testVictoire(etat[i]) != 0:
                         valeurajouer = i
-                        print("valeur a jouer")
-                        print(i)
                 else:
                     etat[i] [i//3][i%3] = 1
                     if self.testVictoire(etat[i]) != 0:
                         valeurajouer = i
-                        print("valeur a jouer")
-                        print(i)
             if valeurajouer == None:
                 for i in etat:
                     if i is not None:
                         temp2 = self.monminimaxamoi(i, not self.tourBlanc)
                         valeurs[etat.index(i)] = temp2
-                        print(i)
-                        print(temp2)
 
             print("fin")
             print(etat)
