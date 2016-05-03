@@ -64,13 +64,9 @@ class MyApp(ShowBase):
             return 1
         elif Liste[0][2] + Liste [1][1] + Liste [2][0] == 3:
             return -1
-
-
         else:
-
             return 0
-
-        return 21
+        print("Si ce texte s'affiche sur la console il y a un probleme avec le test de victoire")
     def __init__(self):
         ShowBase.__init__(self)
         self.camera.setPosHpr(0, -12, 8, 0, -35, 0)
@@ -84,15 +80,15 @@ class MyApp(ShowBase):
             self.environ.setPos(position(i))
         self.environ = [None for i in range(9)]
         self.tourBlanc = True
-        self.accept('1',lambda : self.addCercle(0))
-        self.accept('2',lambda : self.addCercle(1))
-        self.accept('3',lambda : self.addCercle(2))
-        self.accept('4',lambda : self.addCercle(3))
-        self.accept('5',lambda : self.addCercle(4))
-        self.accept('6',lambda : self.addCercle(5))
-        self.accept('7',lambda : self.addCercle(6))
-        self.accept('8',lambda : self.addCercle(7))
-        self.accept('9',lambda : self.addCercle(8))
+        self.accept('1',lambda : self.ajouterCercle(0))
+        self.accept('2',lambda : self.ajouterCercle(1))
+        self.accept('3',lambda : self.ajouterCercle(2))
+        self.accept('4',lambda : self.ajouterCercle(3))
+        self.accept('5',lambda : self.ajouterCercle(4))
+        self.accept('6',lambda : self.ajouterCercle(5))
+        self.accept('7',lambda : self.ajouterCercle(6))
+        self.accept('8',lambda : self.ajouterCercle(7))
+        self.accept('9',lambda : self.ajouterCercle(8))
         self.accept('r',self.reset)
         self.accept('t',self.test)
 
@@ -100,7 +96,7 @@ class MyApp(ShowBase):
         for i in range(9):
             if self.environ[i] is not None:
                 self.environ[i].detachNode()
-            self.tableau[i%3][i//3] = 0
+            self.tableau[i//3][i%3] = 0
     def mouvementPossible(self, table):
         temp = []
         for i in range(9):
@@ -109,7 +105,7 @@ class MyApp(ShowBase):
         return temp
 
 
-    def addCercle(self, i):
+    def ajouterCercle(self, i):
         if self.testVictoire(self.tableau) == 0:
             if self.tableau[i // 3][i %3] == 0:
                 self.environ[i] = self.loader.loadModel("torus")
@@ -179,7 +175,7 @@ class MyApp(ShowBase):
                 valeurajouer = valeurs.index(max(valeurs))
             elif  valeurajouer == None :
                 valeurajouer = valeurs.index(min([x for x in valeurs if x != None]))
-            self.addCercle(valeurajouer)
+            self.ajouterCercle(valeurajouer)
 
 
 
