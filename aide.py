@@ -23,7 +23,7 @@ from copy import *
 from itertools import chain
 
 MARRON = (0.5,0.25,0,1)
-NOIRE = (0, 0, 0, 1)
+BLACK = (0, 0, 0, 1)
 
 def position(i):
     return LPoint3(-3+3*(i%3),-3+3*(i//3),0)
@@ -113,7 +113,7 @@ class MyApp(ShowBase):
                 self.environ[i].setScale(0.37465, 0.37465, 0.37465)
                 if self.tourBlanc == False:
                     self.tableau[i//3][i%3] = 1
-                    self.environ[i].setColor(NOIRE)
+                    self.environ[i].setColor(BLACK)
                 else:
                     self.tableau[i//3][i%3] = 10
                 self.environ[i].setPos(position(i))
