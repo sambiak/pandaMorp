@@ -21,6 +21,7 @@ from panda3d.core import Point3, LPoint3
 from random import randrange
 from copy import *
 from itertools import chain
+from IA import *
 
 MARRON = (0.5,0.25,0,1)
 BLACK = (0, 0, 0, 1)
@@ -76,6 +77,8 @@ class MyApp(ShowBase):
         self.chargerGraphismes()
         self.environ = [None for i in range(9)]
         self.tourBlanc = True
+        self.IA = IA(self.testVictoire, self.mouvementPossible)
+        #mise en place des raccourcis
         self.accept('1',lambda : self.ajouterCercle(0))
         self.accept('2',lambda : self.ajouterCercle(1))
         self.accept('3',lambda : self.ajouterCercle(2))
@@ -98,17 +101,19 @@ class MyApp(ShowBase):
             self.tours[i].setColor(MARRON)
             self.tours[i].setPos(position(i))
     def dechargerGraphismes(self):
-        """Efface tous les tours présentes et les pions"""
+        """Efface tous les tours présente et les pions"""
         for tour in self.tours:
             if tour is not None:
                 tour.detachNode()
         self.reset()
+
     def reset(self):
         for i in range(9):
             if self.environ[i] is not None:
                 self.environ[i].detachNode()
             self.tableau[i//3][i%3] = 0
         self.tourBlanc = True
+
     def mouvementPossible(self, table):
         temp = []
         for i in range(9):
@@ -130,64 +135,10 @@ class MyApp(ShowBase):
                     self.tableau[i//3][i%3] = 10
                 self.environ[i].setPos(position(i))
                 self.tourBlanc = not self.tourBlanc
-    def monminimaxamoi(self, tableau,tourBlanc):
-        etat= []
-        temp = self.mouvementPossible(tableau)
-        if temp == []:
-            return 0
-        for i in temp:
-            etat.append(deepcopy(tableau))
-            if tourBlanc:
-                etat[len(etat)-1] [i//3][i%3] = 10
-                if self.testVictoire(etat[len(etat)-1]) != 0:
-                    return 1
-            else:
-                etat[len(etat)-1] [i//3][i%3] = 1
-                if self.testVictoire(etat[len(etat)-1]) != 0:
-
-                    return -1
-        valeursEtats = []
-        for x in etat:
-            valeursEtats.append(self.monminimaxamoi(x, not tourBlanc))
-        if tourBlanc:
-            return max(valeursEtats)
-        else:
-            return min(valeursEtats)
-
-
 
     def test(self):
-        print(self.tableau)
         if 0 in chain.from_iterable(self.tableau):
-            temp=self.mouvementPossible(self.tableau)
-            etat=[None for i in range(9)]
-            valeurs = [None for i in range(9)]
-            valeurajouer = None
-            for i in temp:
-                etat[i] = deepcopy(self.tableau)
-                if self.tourBlanc:
-                    etat[i] [i//3][i%3] = 10
-                    if self.testVictoire(etat[i]) != 0:
-                        valeurajouer = i
-                else:
-                    etat[i] [i//3][i%3] = 1
-                    if self.testVictoire(etat[i]) != 0:
-                        valeurajouer = i
-            if valeurajouer == None:
-                for i in etat:
-                    if i is not None:
-                        temp2 = self.monminimaxamoi(i, not self.tourBlanc)
-                        valeurs[etat.index(i)] = temp2
-
-            print("fin")
-            print(etat)
-            print(valeurs)
-            print(valeurajouer)
-            if valeurajouer == None and self.tourBlanc:
-                valeurajouer = valeurs.index(max(valeurs))
-            elif  valeurajouer == None :
-                valeurajouer = valeurs.index(min([x for x in valeurs if x != None]))
-            self.ajouterCercle(valeurajouer)
+            self.ajouterCercle(self.IA.meilleurMouvement(self.tableau, self.tourBlanc))
 
 
 
