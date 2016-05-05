@@ -87,6 +87,8 @@ class MyApp(ShowBase):
         self.accept('9',lambda : self.ajouterCercle(8))
         self.accept('r',self.reset)
         self.accept('t',self.test)
+        self.accept('d',self.dechargerGraphismes)
+        self.accept('c',self.chargerGraphismes)
 
     def chargerGraphismes(self):
         for i in range(9):#création des 9 tours
@@ -96,10 +98,10 @@ class MyApp(ShowBase):
             self.tours[i].setColor(MARRON)
             self.tours[i].setPos(position(i))
     def dechargerGraphismes(self):
-        """Eface tous les tours présente et les pions"""
+        """Efface tous les tours présentes et les pions"""
         for tour in self.tours:
             if tour is not None:
-                tour.detachNode
+                tour.detachNode()
         self.reset()
     def reset(self):
         for i in range(9):
