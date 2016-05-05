@@ -73,12 +73,7 @@ class MyApp(ShowBase):
         self.disableMouse()
         self.tableau = [[0 for i in range(3)]for i in range(3)]
         self.tours = [None for i in range(9)]
-        for i in range(9):#création des 9 tours
-            self.tours[i] = self.loader.loadModel("bois")
-            self.tours[i].reparentTo(self.render)
-            self.tours[i].setScale(0.25, 0.25, 0.25) #Echelle
-            self.tours[i].setColor(MARRON)
-            self.tours[i].setPos(position(i))
+        self.chargerGraphismes()
         self.environ = [None for i in range(9)]
         self.tourBlanc = True
         self.accept('1',lambda : self.ajouterCercle(0))
@@ -93,6 +88,19 @@ class MyApp(ShowBase):
         self.accept('r',self.reset)
         self.accept('t',self.test)
 
+    def chargerGraphismes(self):
+        for i in range(9):#création des 9 tours
+            self.tours[i] = self.loader.loadModel("bois")
+            self.tours[i].reparentTo(self.render)
+            self.tours[i].setScale(0.25, 0.25, 0.25) #Echelle
+            self.tours[i].setColor(MARRON)
+            self.tours[i].setPos(position(i))
+    def dechargerGraphismes(self):
+        """Eface tous les tours présente et les pions"""
+        for tour in self.tours:
+            if tour is not None:
+                tour.detachNode
+        self.reset()
     def reset(self):
         for i in range(9):
             if self.environ[i] is not None:
