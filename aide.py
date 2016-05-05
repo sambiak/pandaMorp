@@ -72,12 +72,13 @@ class MyApp(ShowBase):
         self.camera.setPosHpr(0, -12, 8, 0, -35, 0)
         self.disableMouse()
         self.tableau = [[0 for i in range(3)]for i in range(3)]
-        for i in range(9):
-            self.environ = self.loader.loadModel("bois")
-            self.environ.reparentTo(self.render)
-            self.environ.setScale(0.25, 0.25, 0.25) #Echelle
-            self.environ.setColor(MARRON)
-            self.environ.setPos(position(i))
+        self.tours = [None for i in range(9)]
+        for i in range(9):#création des 9 tours
+            self.tours[i] = self.loader.loadModel("bois")
+            self.tours[i].reparentTo(self.render)
+            self.tours[i].setScale(0.25, 0.25, 0.25) #Echelle
+            self.tours[i].setColor(MARRON)
+            self.tours[i].setPos(position(i))
         self.environ = [None for i in range(9)]
         self.tourBlanc = True
         self.accept('1',lambda : self.ajouterCercle(0))
