@@ -22,6 +22,7 @@ from random import randrange
 from copy import *
 from itertools import chain
 
+
 MARRON = (0.5,0.25,0,1)
 BLACK = (0, 0, 0, 1)
 
@@ -33,36 +34,63 @@ class MyApp(ShowBase):
 
     def testVictoire(self, Liste):
         if Liste[0][0] + Liste [0][1] + Liste [0][2] == 30:
+            self.Musiquewin.play()
             return 1
+
+
         elif Liste[0][0] + Liste [0][1] + Liste [0][2] == 3:
+            self.Musiquewin.play()
             return -1
+
         elif Liste[1][0] + Liste [1][1] + Liste [1][2] == 30:
+            self.Musiquewin.play()
             return 1
+
         elif Liste[1][0] + Liste [1][1] + Liste [1][2] == 3:
+            self.Musiquewin.play()
             return -1
+
+
         elif Liste[2][0] + Liste [2][1] + Liste [2][2] == 30:
+            self.Musiquewin.play()
             return 1
+
         elif Liste[2][0] + Liste [2][1] + Liste [2][2] == 3:
+            self.Musiquewin.play()
             return -1
+
         elif Liste[0][0] + Liste [1][0] + Liste [2][0] == 30:
+            self.Musiquewin.play()
             return 1
+
         elif Liste[0][0] + Liste [1][0] + Liste [2][0] == 3:
+            self.Musiquewin.play()
             return -1
+
         elif Liste[0][1] + Liste [1][1] + Liste [2][1] == 30:
+            self.Musiquewin.play()
             return 1
+
         elif Liste[0][1] + Liste [1][1] + Liste [2][1] == 3:
+            self.Musiquewin.play()
             return -1
         elif Liste[0][2] + Liste [1][2] + Liste [2][2] == 30:
+            self.Musiquewin.play()
             return 1
         elif Liste[0][2] + Liste [1][2] + Liste [2][2] == 3:
+            self.Musiquewin.play()
             return -1
         elif Liste[0][0] + Liste [1][1] + Liste [2][2] == 30:
+            self.Musiquewin.play()
             return 1
         elif Liste[0][0] + Liste [1][1] + Liste [2][2] == 3:
+            self.Musiquewin.play()
             return -1
         elif Liste[0][2] + Liste [1][1] + Liste [2][0] == 30:
+            self.Musiquewin.play()
             return 1
         elif Liste[0][2] + Liste [1][1] + Liste [2][0] == 3:
+            self.Musiquewin.play()
             return -1
         else:
             return 0
@@ -79,6 +107,10 @@ class MyApp(ShowBase):
             self.environ.setColor(MARRON)
             self.environ.setPos(position(i))
         self.environ = [None for i in range(9)]
+        self.Musiquewin = self.loader.loadSfx("Epic sax guy 10 hours.mp3")
+        self.Musiquegame = self.loader.loadSfx("Elevator Music.mp3")
+        self.Musiquegame.setLoop(True)
+        self.Musiquegame.play
         self.tourBlanc = True
         self.accept('1',lambda : self.ajouterCercle(0))
         self.accept('2',lambda : self.ajouterCercle(1))
@@ -112,6 +144,7 @@ class MyApp(ShowBase):
                 self.environ[i] = self.loader.loadModel("torus")
                 self.environ[i].reparentTo(self.render)
                 self.environ[i].setScale(0.37465, 0.37465, 0.37465)
+                self.Musiquegame.play
                 if self.tourBlanc == False:
                     self.tableau[i//3][i%3] = 1
                     self.environ[i].setColor(BLACK)
@@ -177,6 +210,7 @@ class MyApp(ShowBase):
             elif  valeurajouer == None :
                 valeurajouer = valeurs.index(min([x for x in valeurs if x != None]))
             self.ajouterCercle(valeurajouer)
+            self.Musiquegame.play
 
 
 
