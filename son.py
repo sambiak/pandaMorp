@@ -4,3 +4,4 @@ from panda3d.core import Point3, LPoint3
 from random import randrange
 from copy import *
 from itertools import chain
+from panda3d.core import p3openal_audio
