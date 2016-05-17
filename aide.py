@@ -15,12 +15,17 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>."""
-
-from direct.showbase.ShowBase import ShowBase
-from panda3d.core import Point3, LPoint3
-from random import randrange
 from copy import *
 from itertools import chain
+from random import randrange
+from direct.showbase.ShowBase import ShowBase
+from panda3d.core import Point3, LPoint3
+from direct.showbase import DirectObject
+from direct.gui.OnscreenText import OnscreenText
+from direct.gui.DirectGui import *
+from direct.gui.OnscreenImage import OnscreenImage
+from panda3d.core import TransparencyAttrib
+from panda3d.core import Loader
 from IA import *
 
 MARRON = (0.5,0.25,0,1)
@@ -74,10 +79,10 @@ class MyApp(ShowBase):
         self.disableMouse()
         self.tableau = [[0 for i in range(3)]for i in range(3)]
         self.tours = [None for i in range(9)]
-        self.chargerGraphismes()
         self.environ = [None for i in range(9)]
+        self.chargerGraphismes()
         self.tourBlanc = True
-        self.IA = IA(self.testVictoire, self.mouvementPossible)
+        self.IA = IA_Difficile(self.testVictoire, self.mouvementPossible)
         #mise en place des raccourcis
         self.accept('1',lambda : self.ajouterCercle(0))
         self.accept('2',lambda : self.ajouterCercle(1))
@@ -139,7 +144,6 @@ class MyApp(ShowBase):
     def test(self):
         if 0 in chain.from_iterable(self.tableau):
             self.ajouterCercle(self.IA.meilleurMouvement(self.tableau, self.tourBlanc))
-
 
 
 
