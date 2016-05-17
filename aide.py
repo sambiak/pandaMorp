@@ -21,19 +21,16 @@ from random import randrange
 from direct.showbase.ShowBase import ShowBase
 from panda3d.core import Point3, LPoint3
 from direct.showbase import DirectObject
-from direct.gui.OnscreenText import OnscreenText
-from direct.gui.DirectGui import *
-from direct.gui.OnscreenImage import OnscreenImage
-from panda3d.core import TransparencyAttrib
 from panda3d.core import Loader
 from IA import *
+from menus import Menu
+from audio import AudioManager
 
 MARRON = (0.5,0.25,0,1)
 BLACK = (0, 0, 0, 1)
 
 def position(i):
     return LPoint3(-3+3*(i%3),-3+3*(i//3),0)
-
 
 class MyApp(ShowBase):
 
@@ -80,9 +77,10 @@ class MyApp(ShowBase):
         self.tableau = [[0 for i in range(3)]for i in range(3)]
         self.tours = [None for i in range(9)]
         self.environ = [None for i in range(9)]
-        self.chargerGraphismes()
         self.tourBlanc = True
         self.IA = IA_Difficile(self.testVictoire, self.mouvementPossible)
+        self.son = AudioManager(self.loader)
+        self.menu = Menu(self.loader, self.chargerGraphismes, self.dechargerGraphismes, self.son, self.reset)
         #mise en place des raccourcis
         self.accept('1',lambda : self.ajouterCercle(0))
         self.accept('2',lambda : self.ajouterCercle(1))
