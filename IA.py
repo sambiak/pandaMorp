@@ -17,114 +17,105 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>."""
 from copy import *
 from random import randrange
+from plateau import *
 
 class IA():
     """Classe de base qui nous permet de définir les différentes fonctions
     que toutes les IA doivent posséder. Cette classe n'est pas faite pour être
     utilisé directement mais seulement en la héritant à une autre classe
     programmeur : Guillaume"""
-    def __init__(self, testVictoire, mouvementPossible):
+    def __init__(self, t_Plateau):
         """Toutes les IA utilisent ces fonctions on les assigne donc ici"""
-        self.testVictoire = testVictoire
-        self.mouvementPossible = mouvementPossible
-    def meilleurMouvement(self, tableau, tourBlanc):
+        self.p_Plateau = t_Plateau
+    def meilleurMouvement(self):
         """Cette fonction doit être implémenté dans chaque IA si elle ne l'est pas
         il y a erreur """
-        pass
+        self.Plateau = Plateau(self.p_Plateau.render, self.p_Plateau.loader, graphismes_actifs = False)
+        self.Plateau.mouvementjoues = deepcopy(self.p_Plateau.mouvementjoues)
+        self.Plateau.tourBlanc = self.p_Plateau.tourBlanc
+        self.Plateau.liste = deepcopy(self.p_Plateau.liste)
 class IA_Difficile(IA):
     """Cette IA utilise l'algorithme minimax pour choisir le meilleur mouvement
     elle hérite les fonctions nécessaires a son fonctionement de IA
     programmeur : Guillaume"""
-    def __init__(self, testVictoire, mouvementPossible):
-        IA.__init__(self, testVictoire, mouvementPossible)
-    def monminimaxamoi(self, tableau,tourBlanc):
+    def __init__(self, Plateau):
+        IA.__init__(self, Plateau)
+    def monminimaxamoi(self):
         """L'implémentation de l'algorithme minimax.
         Elle renvoit une valeur pour chaque tableau"""
-        etats = []
-        mouvements = self.mouvementPossible(tableau)
+        mouvements = self.Plateau.mouvementPossible()
         #si on ne peut plus jouer sur un tableau et qu'il n'y a pas eu de
         #victoires c'est qu'il y a égalité le tableau vaut donc 0
         if mouvements == []:
             return 0
         #On parcoure tous les mouvements possibles, on les joue
         #en placant les états qui en résultent dans le tableau etats
+        valeursEtats = []
         for mouvement in mouvements:
             #on copie le tableau de base pour ne pas le modifier
-            etats.append(deepcopy(tableau))
+            self.Plateau.jouerMouvement(mouvement)
             #on joue le mouvemnt sur le tableau temporaire et on regarde s'il y a
             #victoire en revoyant
-            if tourBlanc:
-                etats[len(etats)-1] [mouvement//3][mouvement%3] = 10
-                if self.testVictoire(etats[len(etats)-1]) != 0:
-                    return 1
+            if self.Plateau.testVictoire() != 0:
+                valeur = self.Plateau.testVictoire()
+                self.Plateau.annulerMouvement()
+                return valeur
             else:
-                etats[len(etats)-1] [mouvement//3][mouvement%3] = 1
-                if self.testVictoire(etats[len(etats)-1]) != 0:
-
-                    return -1
-        valeursEtats = []
-        for x in etats:
-            valeursEtats.append(self.monminimaxamoi(x, not tourBlanc))
-        if tourBlanc:
+                valeursEtats.append(self.monminimaxamoi())
+            self.Plateau.annulerMouvement()
+        #La valeur
+        if self.Plateau.tourBlanc:
             return max(valeursEtats)
         else:
             return min(valeursEtats)
 
-    def meilleurMouvement(self, tableau, tourBlanc):
-        print(tableau)
-        temp=self.mouvementPossible(tableau)
-        etat=[None for i in range(9)]
+    def meilleurMouvement(self):
+        IA.meilleurMouvement(self)
+        mouvements=self.Plateau.mouvementPossible()
+        print(mouvements)
         valeurs = [None for i in range(9)]
         valeurajouer = None
-        for i in temp:
-            etat[i] = deepcopy(tableau)
-            if tourBlanc:
-                etat[i] [i//3][i%3] = 10
-                if self.testVictoire(etat[i]) != 0:
-                    valeurajouer = i
-            else:
-                etat[i] [i//3][i%3] = 1
-                if self.testVictoire(etat[i]) != 0:
-                    valeurajouer = i
+        for mouvement in mouvements:
+            self.Plateau.jouerMouvement(mouvement)
+            if self.Plateau.testVictoire() != 0:
+                print(self.Plateau)
+                valeurajouer = i
+            self.Plateau.annulerMouvement()
         if valeurajouer == None:
-            for i in etat:
-                if i is not None:
-                    temp2 = self.monminimaxamoi(i, not tourBlanc)
-                    valeurs[etat.index(i)] = temp2
-        print("fin")
-        print(etat)
+            for mouvement in mouvements:
+                self.Plateau.jouerMouvement(mouvement)
+                valeurs[mouvement] = self.monminimaxamoi()
+                self.Plateau.annulerMouvement()
+        print("valeur")
         print(valeurs)
         print(valeurajouer)
-        if valeurajouer == None and tourBlanc:
+        if valeurajouer == None and self.Plateau.tourBlanc:
             valeurajouer = valeurs.index(max(valeurs))
         elif  valeurajouer == None :
             valeurajouer = valeurs.index(min([x for x in valeurs if x != None]))
         return valeurajouer
 class IA_Moyenne(IA):
-    def __init__(self, testVictoire, mouvementPossible):
-        IA.__init__(self, testVictoire, mouvementPossible)
-    def meilleurMouvement(self, tableau, tourBlanc):
-        print(tableau)
-        temp=self.mouvementPossible(tableau)
-        etat=[None for i in range(9)]
+    def __init__(self, Plateau):
+        IA.__init__(self, Plateau)
+    def meilleurMouvement(self):
+        IA.meilleurMouvement(self)
+        temp=self.Plateau.mouvementPossible()
         valeurs = [None for i in range(9)]
         valeurajouer = None
-        for i in temp:
-            etat[i] = deepcopy(tableau)
-            if tourBlanc:
-                etat[i] [i//3][i%3] = 10
-                if self.testVictoire(etat[i]) != 0:
-                    valeurajouer = i
-            else:
-                etat[i] [i//3][i%3] = 1
-                if self.testVictoire(etat[i]) != 0:
-                    valeurajouer = i
+        for mouvement in temp:
+            self.Plateau.jouerMouvement(mouvement)
+            if self.Plateau.testVictoire() != 0:
+                valeurajouer = mouvement
+            self.Plateau.annulerMouvement()
         if valeurajouer == None:
             valeurajouer = temp[randrange(len(temp))]
         return valeurajouer
 class IA_Facile(IA):
-    def __init__(self, testVictoire, mouvementPossible):
-        IA.__init__(self, testVictoire, mouvementPossible)
-    def meilleurMouvement(self, tableau, tourBlanc):
-        mouvements = self.mouvementPossible(tableau)
-        return mouvements[randrange(len(mouvements))]
+    def __init__(self, Plateau):
+        IA.__init__(self, Plateau)
+    def meilleurMouvement(self):
+        IA.meilleurMouvement(self)
+        return self.Plateau.mouvementPossible()[randrange(len(self.Plateau.mouvementPossible()))]
+class bloc_IA():
+    def __init__(self, Plateau):
+        self.IA = IA_Facile(Plateau)

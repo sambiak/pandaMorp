@@ -19,15 +19,18 @@ from direct.showbase import DirectObject
 from direct.gui.OnscreenText import OnscreenText
 from direct.gui.DirectGui import *
 from direct.gui.OnscreenImage import OnscreenImage
+from IA import *
 from panda3d.core import TransparencyAttrib
 
 class Menu(DirectObject.DirectObject):
-    def __init__(self, loader, chargerGraphismes, dechargerGraphismes, son, reset):
-        self.__chargerGraphismes = chargerGraphismes
-        self.__dechargerGraphismes = dechargerGraphismes
+    def __init__(self, loader, plateau, son, IA):
+        self.__chargerGraphismes = plateau.chargerGraphismes
+        self.__dechargerGraphismes = plateau.dechargerGraphismes
         self.loader = loader
-        self.reset = reset
+        self.Plateau = plateau
+        self.reset = plateau.reset
         self.son = son
+        self.IA = IA
         self.chargersfx()
         self.Chargerboutons()
         self.menu()
@@ -37,9 +40,9 @@ class Menu(DirectObject.DirectObject):
         self.b = DirectButton(text = ("Jouer", "Jouer", "Jouer", "disabled"),text_scale=(0.1,0.2),pos=(0,0,0.5),command=(self.dechargermenupourmenu2),clickSound=(self.buttonson),rolloverSound=(self.rollsound))
 
         self.b2 = DirectButton(text = ("Settings","Settings","Settings"),text_scale=(0.1,0.2),pos=(0,0,0),command=self.dechargermenupouroptions,clickSound=(self.buttonson))
-        self.b5 = DirectButton(text= ("IA Facile"), text_scale=(0.1,0.2),pos=(0,0,0.75),command=self.dechargermenu2pourgraph,clickSound=(self.buttonson))
-        self.b6 = DirectButton(text= ("IA Intermediaire"), text_scale=(0.1,0.2),pos=(0,0,0),command=self.dechargermenu2pourgraph,clickSound=(self.buttonson))
-        self.b7 = DirectButton(text= ("IA Difficile"), text_scale=(0.1,0.2),pos=(0,0,-0.75),command=self.dechargermenu2pourgraph,clickSound=(self.buttonson))
+        self.b5 = DirectButton(text= ("IA Facile"), text_scale=(0.1,0.2),pos=(0,0,0.75),command=lambda : self.dechargermenu2pourgraph(1),clickSound=(self.buttonson))
+        self.b6 = DirectButton(text= ("IA Intermediaire"), text_scale=(0.1,0.2),pos=(0,0,0),command=lambda : self.dechargermenu2pourgraph(2),clickSound=(self.buttonson))
+        self.b7 = DirectButton(text= ("IA Difficile"), text_scale=(0.1,0.2),pos=(0,0,-0.75),command=lambda : self.dechargermenu2pourgraph(3),clickSound=(self.buttonson))
         self.b.hide()
         self.b5.hide()
         self.b2.hide()
@@ -67,6 +70,7 @@ class Menu(DirectObject.DirectObject):
         self.son.Musiquewin.stop()
 
     def dechargermenupourmenu2(self):
+
         self.b.hide()
         self.b2.hide()
         self.menu2()
@@ -76,7 +80,15 @@ class Menu(DirectObject.DirectObject):
         self.b2.hide()
         self.Option()
 
-    def dechargermenu2pourgraph(self):
+    def dechargermenu2pourgraph(self,niveau):
+        if niveau == 1:
+            self.IA.IA = IA_Facile(self.Plateau)
+        elif niveau == 2:
+            self.IA.IA = IA_Moyenne(self.Plateau)
+        elif niveau == 3:
+            self.IA.IA = IA_Difficile(self.Plateau)
+        else:
+            print("erreur")
     	self.b5.hide()
     	self.b6.hide()
     	self.b7.hide()
